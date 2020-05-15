@@ -1,0 +1,5 @@
+.nuxt
+server/
+test/
+app.html
+/**/*.js
