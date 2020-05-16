@@ -18,6 +18,7 @@ module.exports = {
   rules: {
     'nuxt/no-cjs-in-config': 'off',
     'semi': [2, 'always'],
-    "camelcase": 'off'
+    "camelcase": 'off',
+    'no-new': "off"
   }
 }

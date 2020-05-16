@@ -13,7 +13,7 @@ export class Grain {
     /**
  * Create canvas
  */
-    this.canvas = el;
+    this.canvas = document.querySelector('.grain');
     this.ctx = this.canvas.getContext('2d');
     this.ctx.scale(this.patternScaleX, this.patternScaleY);
 
