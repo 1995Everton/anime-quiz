@@ -31,11 +31,12 @@
               <span>e</span>
               <span>o</span>
               <div class="s">
-                <span>a</span>
                 <span>n</span>
-                <span>i</span>
-                <span>m</span>
-                <span>e</span>
+                <span>a</span>
+                <span>r</span>
+                <span>u</span>
+                <span>t</span>
+                <span>o</span>
                 <span>q</span>
                 <span>u</span>
                 <span>i</span>
@@ -43,7 +44,7 @@
               </div>
             </div>
             <p>
-              <button>Click anywhere to play</button>
+              <button>Clique aqui para jogar</button>
             </p>
           </div>
         </div>
@@ -53,18 +54,24 @@
         ></div>
         <div class="main_inner__modal" :class="{ 'd-block': modal }"></div>
         <div class="main_inner__modalContent" :class="{ 'd-block': modal }">
-          <h1>Quiz complete!</h1>
-          <p class="score">You got 7 out of 8 correct!</p>
+          <h1>Quiz completado!</h1>
+          <p class="score">
+            Você acertou
+            {{
+              breadcrumbs.filter(({ classe }) => classe === 'correct').length
+            }}
+            em 5!
+          </p>
           <p>
-            Don't forget to follow the talented bunch that contributed to this
-            pen. They are:
+            Muito obrigado por jogar, volte sempre que quiser testar seu
+            conhecimento em Naruto
           </p>
           <button class="share" @click="initQuiz">Jogar Novamente</button>
         </div>
         <div class="main_inner__title">
-          <h1>In what popular video game would you find this?</h1>
-          <p>Click on an answer</p>
-          <a @click="hint = !hint">Need a hint?</a>
+          <h1>{{ getQuestion }}</h1>
+          <p>Clique em uma resposta</p>
+          <a @click="hint = !hint">Precisa do nome do personagem?</a>
           <div v-show="hint" class="hint">{{ getHint }}</div>
         </div>
         <div class="main_inner__circle" :style="circle"></div>
@@ -77,13 +84,13 @@
         </div>
         <div class="main_inner__answers">
           <div
-            v-for="answer in answers"
-            :key="answer"
+            v-for="{ id, name } in answers"
+            :key="id"
             class="answer"
             @mouseover="playSound(music.buttonClick)"
-            @click="verifyAnswer(answer)"
+            @click="verifyAnswer(id)"
           >
-            {{ answer }}
+            {{ name }}
           </div>
         </div>
         <div class="main_inner__breadcrumbs">
@@ -102,23 +109,18 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { Grain } from '~/components/Grain.js';
+import { Grain, Answers, Quiz } from '~/models';
 
 export default Vue.extend({
-  data: () => ({
+  data: (): Quiz => ({
     start: false,
     modal: false,
     hint: false,
     transitioning: false,
     progress: 0,
-    answer: '',
     answers: [],
-    breadcrumbs: [
-      {
-        classe: '',
-        status: false
-      }
-    ],
+    breadcrumbs: [],
+    scenes: [],
     circle: {
       background: '#fb741e',
       transform: 'translateY(-50%) scale(1)',
@@ -134,90 +136,6 @@ export default Vue.extend({
         transform: 'translateY(-50%) scale(0) rotate(20deg)'
       }
     },
-    scenes: [
-      {
-        answer: 'Crash Bandicoot',
-        backgroundColor: 'rgb(67, 34, 56)',
-        photo:
-          'https://vignette.wikia.nocookie.net/naruto/images/8/8d/UchihaItachi.png/revision/latest/scale-to-width-down/310?cb=20180420021356&path-prefix=pt-br',
-        hint: 'UKA UKA is FREEEEE!'
-      },
-      {
-        answer: 'Kirby',
-        backgroundColor: 'rgb(218, 68, 103)',
-        photo:
-          'https://vignette.wikia.nocookie.net/naruto/images/8/8d/UchihaItachi.png/revision/latest/scale-to-width-down/310?cb=20180420021356&path-prefix=pt-br',
-        hint: 'A Nintendo classic'
-      },
-      {
-        answer: 'Broken Age',
-        backgroundColor: '#ea894f',
-        photo:
-          'https://vignette.wikia.nocookie.net/naruto/images/8/8d/UchihaItachi.png/revision/latest/scale-to-width-down/310?cb=20180420021356&path-prefix=pt-br',
-        hint: 'An animated puzzle adventure'
-      },
-      {
-        answer: 'Final Fantasy',
-        backgroundColor: '#3fde9d',
-        photo:
-          'https://vignette.wikia.nocookie.net/naruto/images/8/8d/UchihaItachi.png/revision/latest/scale-to-width-down/310?cb=20180420021356&path-prefix=pt-br',
-        hint: 'Kupo!'
-      },
-      {
-        answer: 'Mario Brothers',
-        backgroundColor: '#fb741e',
-        photo:
-          'https://vignette.wikia.nocookie.net/naruto/images/8/8d/UchihaItachi.png/revision/latest/scale-to-width-down/310?cb=20180420021356&path-prefix=pt-br',
-        hint: 'Letsa gooooooo!'
-      },
-      {
-        answer: 'Final Fantsy 7',
-        backgroundColor: '#4d352f',
-        photo:
-          'https://vignette.wikia.nocookie.net/naruto/images/8/8d/UchihaItachi.png/revision/latest/scale-to-width-down/310?cb=20180420021356&path-prefix=pt-br',
-        hint: '1997 JRPG for PS1!'
-      }
-    ],
-    videoGames: [
-      'Pong',
-      'Zork',
-      'Space Invaders',
-      'Asteroids',
-      'Pac-Man',
-      'Defender',
-      'Donkey Kong',
-      'Frogger',
-      'Galaga',
-      'Joust',
-      'Ms. Pac-Man',
-      'Pitfall!',
-      'Tetris',
-      'Gauntlet',
-      'Super Mario Bros.',
-      'The Legend of Zelda',
-      'Contra',
-      'Double DrvideoGamesagon',
-      'Grand Theft Auto',
-      'Half-Life 2',
-      'Katamari Damacy',
-      'Metal Gear Solid 3',
-      'World of Warcraft',
-      'Civilization IV',
-      'Devil May Cry 3',
-      'God of War',
-      'Guitar Hero',
-      'Resident Evil 4',
-      'Shadow of the Colossus',
-      'Tom Clancys Splinter Cell',
-      'The Elder Scrolls IV',
-      'Gears of War',
-      'Ōkami',
-      'Spiderman',
-      'Tomb Raider',
-      'Wii Sports',
-      'BioShock',
-      'Call of Duty 4: Modern Warfare'
-    ],
     config: {
       audio: true,
       audioSwitch: true,
@@ -229,38 +147,59 @@ export default Vue.extend({
       correct: new Audio('/music/effect/correct.mp3'),
       slide: new Audio('/music/effect/slideslow.mp3'),
       wrong: new Audio('/music/effect/wrong.mp3')
-    }
+    },
+    colors: [
+      'rgb(67, 34, 56)',
+      'rgb(218, 68, 103)',
+      '#ea894f',
+      '#3fde9d',
+      '#4d352f'
+    ]
   }),
   computed: {
+    getQuestion() {
+      const { question = { question: '' } } = this.scenes[this.progress] || {};
+      return question.question;
+    },
     getHint() {
-      const { hint = '' } = this.scenes[this.progress] || {};
-      return hint;
+      const { tip = '' } = this.scenes[this.progress] || {};
+      return tip;
     }
   },
   mounted() {
     this.initQuiz();
   },
   methods: {
-    initQuiz() {
-      this.music.wrong.volume = 0.2;
-      this.setUp();
-      new Grain();
-      this.initScene();
+    async initQuiz() {
+      try {
+        this.scenes = await this.$axios.$get<Answers[]>('/quiz');
+        this.music.wrong.volume = 0.2;
+        this.setUp();
+        new Grain();
+        this.initScene();
+      } catch (error) {
+        console.log('error');
+      }
+    },
+    async checkAnswer(answer_id: number): Promise<boolean> {
+      try {
+        const { id, question, photo } = this.scenes[this.progress];
+        const { correct } = await this.$axios.$post('/verify', {
+          question: question.id,
+          character: question.id === 1 ? photo : id,
+          answer: answer_id
+        });
+        return correct;
+      } catch (error) {
+        return false;
+      }
     },
     initScene() {
       this.setBreadcrumbs('active');
       this.hint = false;
-      const rand = Math.floor(Math.random() * (this.videoGames.length - 1));
-      const { answer, photo } = this.scenes[this.progress];
+      const { answers, photo } = this.scenes[this.progress];
       this.circle.background = `url(${photo}) no-repeat`;
-      this.answer = answer;
-      const itens = [answer, this.videoGames[rand], this.videoGames[rand - 1]];
-      const shuffleArray = (arr: Array<string>) =>
-        arr
-          .map((a) => [Math.random(), a])
-          .sort((a: any, b: any) => a[0] - b[0])
-          .map((a: any) => a[1]);
-      this.answers = shuffleArray(itens) as never[];
+      this.answers = answers;
     },
     setUp() {
       this.modal = false;
@@ -276,10 +215,10 @@ export default Vue.extend({
         });
       });
     },
-    async verifyAnswer(answer: string) {
+    async verifyAnswer(answer_id: number) {
       if (this.transitioning) return;
       this.transitioning = true;
-      if (this.answer === answer) {
+      if (await this.checkAnswer(answer_id)) {
         this.playSound(this.music.correct);
         this.feedback.text = 'Correct';
         this.feedback.classe.correct = true;
@@ -306,7 +245,7 @@ export default Vue.extend({
 
         this.circle.transform = `translateY(-50%) scale(10)`;
 
-        this.circle.background = '#fb741e';
+        this.circle.background = '#7f1919';
 
         await this.timer(640);
 
@@ -372,7 +311,7 @@ export default Vue.extend({
     changeColorBody() {
       const body = document.querySelector('body');
       if (body) {
-        body.style.background = this.scenes[this.progress].backgroundColor;
+        body.style.background = this.colors[this.progress];
         body.style.overflow = 'hidden';
       }
     }

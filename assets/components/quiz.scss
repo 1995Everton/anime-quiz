@@ -166,7 +166,7 @@ body {
                     right: 0;
                     margin: auto;
                     top: -70px;
-                    width: 100px;
+                    width: 112px;
                     font-size: 120px;
                         //ext-shadow: -3px 0 black, 3px 0 black, 0px -3px 0 black, 0px 3px 0 black;
 
@@ -270,6 +270,7 @@ body {
 
             &__modal,
             &__modalContent {
+              text-align: center;
                 button {
                         opacity: 1;
     border: none;
