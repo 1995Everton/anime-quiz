@@ -7,21 +7,21 @@
         :class="{ 'music-on': config.audioSwitch }"
         @click="toggleSound"
       >
-        <img src="/icons/sfIcon2.png" />
+        <img src="/anime-quiz/icons/sfIcon2.png" />
       </div>
       <div
         class="options_bg music-off"
         :class="{ 'music-on': config.sfxSwitch }"
         @click="toggleMusic"
       >
-        <img src="/icons/bgIcon2.png" />
+        <img src="/anime-quiz/icons/bgIcon2.png" />
       </div>
     </div>
     <div class="main">
       <div class="main_inner">
         <div class="main_inner__loading" :class="{ loaded: start }">
           <div class="bg">
-            <img src="/mars_sunburst.png" />
+            <img src="/anime-quiz/mars_sunburst.png" />
           </div>
           <div class="loader" @click="startQuiz">
             <div class="text">
@@ -142,11 +142,11 @@ export default Vue.extend({
       sfxSwitch: true
     },
     music: {
-      soundtrack: new Audio('/music/naruto/11.mp3'),
-      buttonClick: new Audio('/music/effect/buttonclick.mp3'),
-      correct: new Audio('/music/effect/correct.mp3'),
-      slide: new Audio('/music/effect/slideslow.mp3'),
-      wrong: new Audio('/music/effect/wrong.mp3')
+      soundtrack: new Audio('/anime-quiz/music/naruto/11.mp3'),
+      buttonClick: new Audio('/anime-quiz/music/effect/buttonclick.mp3'),
+      correct: new Audio('/anime-quiz/music/effect/correct.mp3'),
+      slide: new Audio('/anime-quiz/music/effect/slideslow.mp3'),
+      wrong: new Audio('/anime-quiz/music/effect/wrong.mp3')
     },
     colors: [
       'rgb(67, 34, 56)',
@@ -177,9 +177,7 @@ export default Vue.extend({
         this.setUp();
         new Grain();
         this.initScene();
-      } catch (error) {
-        console.log('error');
-      }
+      } catch (error) {}
     },
     async checkAnswer(answer_id: number): Promise<boolean> {
       try {

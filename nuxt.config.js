@@ -17,7 +17,7 @@ module.exports = {
       }
     ],
     link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+      { rel: 'icon', type: 'image/x-icon', href: '/anime-quiz/favicon.ico' },
       { rel: 'stylesheet', href: 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css' }
     ]
   },
@@ -57,6 +57,10 @@ module.exports = {
    */
   axios: {
     baseURL: 'https://naruto-quiz-api.herokuapp.com'
+  },
+
+  router: {
+    base: '/anime-quiz'
   },
 
   server: {
