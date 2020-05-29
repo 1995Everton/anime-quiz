@@ -48,51 +48,42 @@
             </p>
           </div>
         </div>
-        <div
-          class="main_inner__modalOverlay"
-          :class="{ 'd-block': modal }"
-        ></div>
-        <div class="main_inner__modal" :class="{ 'd-block': modal }"></div>
-        <div class="main_inner__modalContent" :class="{ 'd-block': modal }">
-          <h1>Quiz completado!</h1>
-          <p class="score">
-            Você acertou
-            {{
-              breadcrumbs.filter(({ classe }) => classe === 'correct').length
-            }}
-            em 5!
-          </p>
-          <p>
-            Muito obrigado por jogar, volte sempre que quiser testar seu
-            conhecimento em Naruto
-          </p>
-          <button class="share" @click="initQuiz">Jogar Novamente</button>
-        </div>
-        <div class="main_inner__title">
-          <h1>{{ getQuestion }}</h1>
-          <p>Clique em uma resposta</p>
-          <a @click="hint = !hint">Precisa do nome do personagem?</a>
-          <div v-show="hint" class="hint">{{ getHint }}</div>
-        </div>
-        <div class="main_inner__circle" :style="circle"></div>
-        <div
-          class="main_inner__feedback"
-          :style="feedback.style"
-          :class="feedback.classe"
-        >
-          {{ feedback.text }}
-        </div>
-        <div class="main_inner__answers">
-          <div
-            v-for="{ id, name } in answers"
-            :key="id"
-            class="answer"
-            @mouseover="playSound(music.buttonClick)"
-            @click="verifyAnswer(id)"
-          >
-            {{ name }}
+        <modal
+          v-model="modal"
+          :score="
+            breadcrumbs.filter(({ classe }) => classe === 'correct').length
+          "
+          @click="initQuiz"
+        />
+        <loading v-if="loading"></loading>
+        <template v-else>
+          <div class="main_inner__title">
+            <h1>{{ getQuestion }}</h1>
+            <p>Clique em uma resposta</p>
+            <a @click="hint = !hint">Precisa do nome do personagem?</a>
+            <div v-show="hint" class="hint">{{ getHint }}</div>
           </div>
-        </div>
+          <div class="main_inner__circle" :style="circle"></div>
+          <div
+            class="main_inner__feedback"
+            :style="feedback.style"
+            :class="feedback.classe"
+          >
+            {{ feedback.text }}
+          </div>
+          <div class="main_inner__answers">
+            <div
+              v-for="{ id, name } in answers"
+              :key="id"
+              class="answer"
+              @mouseover="playSound(music.buttonClick)"
+              @click="verifyAnswer(id)"
+            >
+              {{ name }}
+            </div>
+          </div>
+        </template>
+
         <div class="main_inner__breadcrumbs">
           <div
             v-for="({ classe, status }, index) in breadcrumbs"
@@ -109,14 +100,21 @@
 
 <script lang="ts">
 import Vue from 'vue';
+import Loading from '~/components/global/Loading.vue';
+import Modal from '~/components/global/Modal.vue';
 import { Grain, Answers, Quiz } from '~/models';
 
 export default Vue.extend({
+  components: {
+    Loading,
+    Modal
+  },
   data: (): Quiz => ({
     start: false,
     modal: false,
     hint: false,
     transitioning: false,
+    loading: false,
     progress: 0,
     answers: [],
     breadcrumbs: [],
@@ -172,15 +170,20 @@ export default Vue.extend({
   methods: {
     async initQuiz() {
       try {
+        this.loading = true;
         this.scenes = await this.$axios.$get<Answers[]>('/quiz');
         this.music.wrong.volume = 0.2;
         this.setUp();
         new Grain();
         this.initScene();
-      } catch (error) {}
+      } catch (error) {
+      } finally {
+        this.loading = false;
+      }
     },
     async checkAnswer(answer_id: number): Promise<boolean> {
       try {
+        this.loading = true;
         const { id, question, photo } = this.scenes[this.progress];
         const { correct } = await this.$axios.$post('/verify', {
           question: question.id,
@@ -190,6 +193,8 @@ export default Vue.extend({
         return correct;
       } catch (error) {
         return false;
+      } finally {
+        this.loading = false;
       }
     },
     initScene() {
@@ -317,6 +322,6 @@ export default Vue.extend({
 });
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 @import '~/assets/components/quiz.scss';
 </style>

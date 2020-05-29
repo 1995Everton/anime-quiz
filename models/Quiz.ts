@@ -5,6 +5,7 @@ export interface Quiz {
   modal: boolean;
   hint: boolean;
   transitioning: boolean;
+  loading: boolean;
   progress: number;
   answers: Answer[];
   breadcrumbs: Breadcrumbs[];

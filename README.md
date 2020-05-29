@@ -9,21 +9,28 @@
 
 ### ✨ [Demo](https://1995everton.github.io/anime-quiz/)
 
-## 👉 Instalar Dependências
+## 👉 Install
 
 ```sh
 npm install
 ```
-## 🚀 Uso
+## 🚀 Use
 ```sh
 npm run dev
 ```
 [http://localhost:3000/anime-quiz/](http://localhost:3000/anime-quiz/)
 
-### 🐳 Docker (recomendado)
+### 🐳 Docker (recommended)
 ```sh
 docker-compose up
 ```
+
+## Front End
+
+Codes adapted from the following developer, I would like to thank him for making them available
+
+* [QUIZ](https://codepen.io/jcoulterdesign/pen/NeOQzX)
+* [LOADING](https://codepen.io/rafaelavlucas/pen/wbrdez)
 
 ## 🧔Author
 
@@ -34,11 +41,11 @@ docker-compose up
 
 ## 🤝 Contributing
 
-Contribuições, problemas e solicitações de recursos são bem-vindos!<br />Sinta-se livre para verificar [issues page](https://github.com/1995Everton/anime-quiz/issues). Você também pode dar uma olhada no [contributing guide](https://github.com/1995Everton/anime-quiz/blob/master/CONTRIBUTING.md).
+Contributions, issues and feature requests are welcome! <br />Feel free to check [issues page](https://github.com/1995Everton/anime-quiz/issues). You can also take a look at the [contributing guide](https://github.com/1995Everton/anime-quiz/blob/master/CONTRIBUTING.md).
 
 ## Show your support
 
-Dê um ⭐️ se este projeto ajudou você!
+Give a ⭐️ if this project helped you!
 
 ***
 _This README was generated with ❤️ by [readme-md-generator](https://github.com/kefranabg/readme-md-generator)_

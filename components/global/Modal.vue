@@ -1,14 +1,15 @@
 <template>
-  <div class="modal-wrapper" :class="{ open: value }">
-    <div class="modal">
-      <div class="head">
-        <a class="btn-close trigger" @click="$emit('input', false)">
-          <i class="fa fa-times" aria-hidden="true"></i>
-        </a>
-      </div>
-      <div class="content">
-        <slot />
-      </div>
+  <div class="main_inner" :class="{ 'd-block': value }">
+    <div class="main_inner__modalOverlay"></div>
+    <div class="main_inner__modal"></div>
+    <div class="main_inner__modalContent">
+      <h1>Quiz completado!</h1>
+      <p class="score">Você acertou {{ score }} em 5!</p>
+      <p>
+        Muito obrigado por jogar, volte sempre que quiser testar seu
+        conhecimento em Naruto
+      </p>
+      <button class="share" @click="$emit('click')">Jogar Novamente</button>
     </div>
   </div>
 </template>
@@ -20,80 +21,86 @@ export default Vue.extend({
     value: {
       type: Boolean,
       default: false
+    },
+    score: {
+      type: Number,
+      default: 0
     }
   }
 });
 </script>
 
 <style lang="scss" scoped>
-@import url('https://fonts.googleapis.com/css?family=Montserrat:400,700');
+.main_inner {
+  display: none;
+  &__modal,
+  &__modalContent {
+    text-align: center;
+    button {
+      opacity: 1;
+      border: none;
+      background: #00b3ff;
+      padding: 20px 30px 17px 30px;
+      color: white;
+      border-radius: 7px;
+      font-size: 17px;
+      margin-top: 30px;
+      font-family: 'Retrocycles';
+    }
+    h1 {
+      font-family: 'Retrocycles';
+      font-size: 50px;
+      margin: 0;
+      color: #3a2132;
+    }
+    position: fixed;
+    -webkit-animation: squiggly-anim 0.3s linear infinite,
+      scale_bounce_expo 1s 0s forwards;
+    animation: squiggly-anim 0.3s linear infinite;
+    width: 500px;
+    background: white;
+    padding: 50px;
+    border-radius: 20px;
+    left: 0;
+    right: 0;
+    margin: auto;
+    z-index: 3;
+    height: 450px;
+    top: 50%;
+    -webkit-transform: translateY(-50%);
+    transform: translateY(-50%);
 
-.blur-it {
-  filter: blur(4px);
-}
+    .score {
+      font-size: 30px;
+      color: #bd2b2b;
+    }
 
-.modal-wrapper {
-  width: 100%;
-  height: 100%;
-  position: fixed;
-  top: 0;
-  left: 0;
-  background: rgba(41, 171, 164, 0.8);
-  visibility: hidden;
-  opacity: 0;
-  transition: all 0.25s ease-in-out;
-}
+    a {
+      display: block;
+      margin: 10px 0;
+      font-weight: 700;
+      color: #3a2031;
+      text-decoration: underline;
+    }
 
-.modal-wrapper.open {
-  opacity: 1;
-  visibility: visible;
-}
+    @media only screen and (max-width: 650px) {
+      width: calc(100% - 50px);
+    }
+  }
 
-.modal {
-  width: 600px;
-  height: 400px;
-  display: block;
-  margin: 50% 0 0 -300px;
-  position: relative;
-  top: 50%;
-  left: 50%;
-  background: #fff;
-  opacity: 0;
-  transition: all 0.5s ease-in-out;
-}
+  &__modalContent {
+    animation: none;
+    background: transparent !important;
+  }
 
-.modal-wrapper.open .modal {
-  margin-top: -200px;
-  opacity: 1;
-}
-
-.head {
-  height: 54px;
-  padding: 12px 30px;
-  overflow: hidden;
-  background: #e2525c;
-}
-
-.btn-close {
-  font-size: 28px;
-  display: block;
-  float: right;
-  color: #fff;
-}
-
-.content {
-  padding: 10%;
-}
-
-.good-job {
-  text-align: center;
-  font-family: 'Montserrat', Arial, Helvetica, sans-serif;
-  color: #e2525c;
-}
-.good-job .fa-thumbs-o-up {
-  font-size: 60px;
-}
-.good-job h1 {
-  font-size: 45px;
+  &__modalOverlay {
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    background: rgba(39, 33, 86, 0.7686274509803922);
+    left: 0;
+    top: 0;
+    z-index: 2;
+  }
 }
 </style>
