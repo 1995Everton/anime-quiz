@@ -56,7 +56,8 @@ module.exports = {
    ** See https://axios.nuxtjs.org/options
    */
   axios: {
-    baseURL: 'https://naruto-quiz-api.herokuapp.com'
+    baseURL: 'https://naruto-quiz-api.onrender.com'
+    // baseURL: 'https://naruto-quiz-api.herokuapp.com'
   },
 
   router: {
